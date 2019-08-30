@@ -13,6 +13,8 @@ npm run serve
 ### Compiles and minifies for production
 ```
 npm run build
+copy all files in dist to your webapp
+
 ```
 
 ### Run your tests

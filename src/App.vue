@@ -1,28 +1,99 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Header />
+    <div class="main">
+      <Sidebar @openMenu="openMenu" />
+      <div class="content">
+        <Toolbar :selectedMenus="selectedMenus" :currentMenu="currentMenu" @openMenu="openMenu" @closeMenu="closeMenu"/>
+        <router-view></router-view>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+  import Header from './components/layout/Header'
+  import Sidebar from './components/layout/Sidebar'
+  import Toolbar from './components/layout/Toolbar'
 
-export default {
-  name: 'app',
-  components: {
-    HelloWorld
+  export default {
+      name: 'app',
+      data: function() {
+        return {
+            selectedMenus: [],
+            currentMenu: {}
+        }
+      },
+
+      components: {
+          Header,
+          Sidebar,
+          Toolbar,
+      },
+
+      methods: {
+          openMenu(menu) {
+              if (!menu) return;
+
+              let index = this.selectedMenus.findIndex(it => it.name === menu.name);
+              if (index === -1) {
+                  this.selectedMenus.push(menu);
+                  this.selectedMenus = this.selectedMenus.slice(-10);
+              }
+              this.currentMenu = menu;
+          },
+
+          closeMenu(menu) {
+              let index = this.selectedMenus.findIndex(it => it.name === menu.name);
+              if (index === -1) return;
+
+              this.selectedMenus.splice(index, 1);
+              if (this.currentMenu.name === menu.name) {
+                  if (this.selectedMenus.length === 0) {
+                      return;
+                  }
+                  if (this.selectedMenus.length === index) {
+                      this.currentMenu = this.selectedMenus[index - 1]
+                  } else {
+                      this.currentMenu = this.selectedMenus[index]
+                  }
+              }
+          }
+      }
   }
-}
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="less">
+  @import "assets/less/common";
+
+  #app {
+    height: 100%;
+  }
+  .container {
+    height: 100%;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    background: white;
+    color: white;
+    overflow: hidden;
+    border: 1px solid @grey;
+  }
+
+  .main {
+    width: 100%;
+    height: calc(~"100% - @{header-height}");
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .content {
+    position: relative;
+    height: 100%;
+    background: #f9fafc;
+    width: calc(~"100% - @{sidebar-width}");
+  }
+
 </style>
