@@ -54,13 +54,12 @@
 </script>
 
 <style scoped lang="less">
-    @import "../../assets/less/common";
-
     .pagination {
         width: 100%;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        margin-top: 30px;
     }
 
     .pagination a {

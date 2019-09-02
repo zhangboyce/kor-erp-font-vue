@@ -2,11 +2,11 @@
     <div class="segment">
         <div class="panel">
             <template v-if="notifications && notifications.length !== 0" >
-                <div class="nt-item" v-for="nt in notifications">
+                <div class="row nt-item" v-for="nt in notifications">
                     <span class="title">{{ nt.title }}</span>
                     <span class="date">{{ nt.date }}</span>
                 </div>
-                <div class="nt-item">
+                <div class="row">
                     <Pagination @page="page" :total="total" :page-size="pageSize" :current-page="currentPage" />
                 </div>
             </template>
@@ -56,8 +56,6 @@
 </script>
 
 <style scoped lang="less">
-    @import "../../assets/less/segment";
-
     .nt-item {
         display: flex;
         flex-direction: row;

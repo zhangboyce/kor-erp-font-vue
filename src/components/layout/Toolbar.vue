@@ -16,8 +16,6 @@
 </script>
 
 <style scoped lang="less">
-    @import "../../assets/less/common";
-
     .toolbar {
         display: flex;
         flex-direction: row;

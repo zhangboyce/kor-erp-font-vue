@@ -57,7 +57,6 @@
 </script>
 
 <style lang="less">
-    @import "../../assets/less/common";
     .sidebar {
         width: @sidebar-width;
         height: 100%;
@@ -152,6 +151,7 @@
         font-size: 13px;
         color: @grey;
         margin: 10px 4px;
+        padding-left: 10px;
 
         &::before {
             content: '';

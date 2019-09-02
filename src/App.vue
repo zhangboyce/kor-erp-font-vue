@@ -44,6 +44,7 @@
           },
 
           closeMenu(menu) {
+              if (this.selectedMenus.length === 1) return;
               let index = this.selectedMenus.findIndex(it => it.name === menu.name);
               if (index === -1) return;
 
@@ -53,9 +54,10 @@
                       return;
                   }
                   if (this.selectedMenus.length === index) {
-                      this.currentMenu = this.selectedMenus[index - 1]
+                      this.currentMenu = this.selectedMenus[index - 1];
+                      this.$router.push(this.currentMenu.path);
                   } else {
-                      this.currentMenu = this.selectedMenus[index]
+                      this.currentMenu = this.selectedMenus[index];
                   }
               }
           }
@@ -64,8 +66,6 @@
 </script>
 
 <style lang="less">
-  @import "assets/less/common";
-
   #app {
     height: 100%;
   }

@@ -10,8 +10,7 @@
     }
 </script>
 
-<style lang="less">
-    @import "../../assets/less/common";
+<style lang="less" scoped>
     .header {
         width: 100%;
         padding: 30px;

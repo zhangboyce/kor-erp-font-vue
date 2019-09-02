@@ -4,6 +4,10 @@ import VueRouter from 'vue-router';
 import menus from './menus_config';
 import  'animate.css'
 
+import 'ant-design-vue/dist/antd.less';
+import Antd from 'ant-design-vue'
+Vue.use(Antd);
+
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
 
