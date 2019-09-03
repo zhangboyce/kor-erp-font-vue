@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="operation">
+        <div class="operation" v-if="!!onAdd || !!onDelete || !!onEdit">
             <a-button @click="toAdd" v-if="!!onAdd" class="operation-btn" >Add</a-button>
             <slot v-if="!!onAdd"
                   name="add-modal"
@@ -24,13 +24,14 @@
 
         </div>
 
-        <a-table bordered :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}" :dataSource="dataSource" :columns="columns" :pagination="pagination"></a-table>
+        <a-table bordered :rowSelection="selectable ? {selectedRowKeys: selectedRowKeys, onChange: onSelectChange} : null" :dataSource="dataSource" :columns="columns" :pagination="pagination"></a-table>
     </div>
 </template>
 <script>
     export default {
         name: 'Table',
         props: {
+            selectable: Boolean,
             dataSource: Array,
             columns: Array,
             onAdd: Function,
@@ -120,7 +121,7 @@
         },
     }
 </script>
-<style lang="less">
+<style lang="less" scoped>
     .operation {
         padding: 20px 0;
     }

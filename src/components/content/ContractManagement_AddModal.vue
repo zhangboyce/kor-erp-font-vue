@@ -17,9 +17,14 @@
             </a-row>
             <a-row>
                 <a-col :span="12">
-                    <label>거래처명 <a-input v-model="newRecord.xxx" /> </label>
+                    <label>거래처명
+                        <a-input v-model="newRecord.xxx" />
+                    </label>
                 </a-col>
-                <a-col :span="12">이미지 <label><a-input v-model="newRecord.ooo" /> </label>
+                <a-col :span="12">
+                    <label>이미지
+                        <a-input v-model="newRecord.ooo" />
+                    </label>
                 </a-col>
             </a-row>
         </div>

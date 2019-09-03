@@ -24,7 +24,7 @@
         flex-wrap: nowrap;
         border-bottom: 1px solid @light-grey;
         width: 100%;
-        height: 53px;
+        height: @toolbar-height;
         background-color: #fff;
         font-family: NotoSansCJKkr-Bold, sans-serif;
         font-size: 12px;

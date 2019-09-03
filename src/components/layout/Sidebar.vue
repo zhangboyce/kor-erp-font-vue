@@ -1,9 +1,9 @@
 <template>
     <div class="sidebar">
-        <div v-for="menu in menus" class="section" :key="menu.name">
+        <div v-for="(menu, i) in menus" class="section" :key="'menu-' + i">
             <transition-expand>
                 <div v-if="isExpanded(menu.name)" :class="{ collapse: true, show: isExpanded(menu.name) }">
-                    <router-link @click.native="$emit('openMenu', subMenu)" v-for="subMenu in menu.children" :to="subMenu.path" :key="subMenu.name">{{ subMenu.name }}</router-link>
+                    <router-link @click.native="$emit('openMenu', subMenu)" v-for="(subMenu, j) in menu.children" :to="subMenu.path" :key="'sub-menu-'+j">{{ subMenu.name }}</router-link>
                 </div>
             </transition-expand>
             <span @click="toggleCollapse(menu.name)">{{ menu.name }}<i></i></span>
@@ -56,7 +56,7 @@
     }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
     .sidebar {
         width: @sidebar-width;
         height: 100%;

@@ -11,7 +11,25 @@ Vue.use(Antd);
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
 
-const routes = menus.map(it => it.children).flat(Infinity);
+
+import Main from './components/layout/Main'
+import Login from './components/layout/Login'
+const segments = menus.map(it => it.children).flat(Infinity);
+let routes = [
+    {
+        path: '/',
+        components: {
+            page: Main,
+        },
+        children: segments
+    },
+    {
+        path: '/login',
+        components: {
+            page: Login,
+        },
+    }
+];
 const router = new VueRouter({ routes });
 
 new Vue({

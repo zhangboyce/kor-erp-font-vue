@@ -12,7 +12,8 @@
                         :options="seasons" />
             </div>
             <div class="row">
-                <Table :dataSource="data"
+                <Table selectable="true"
+                       :dataSource="data"
                        :columns="columns"
                        :on-add="handleAdd.bind(this)"
                        :on-delete="handleDelete.bind(this)"
