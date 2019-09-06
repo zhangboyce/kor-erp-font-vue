@@ -1,14 +1,20 @@
-let host = 'http://117.16.136.196:8080/mverp_dev';
 import axios from 'axios';
+axios.defaults.baseURL = process.env.VUE_APP_SERVER;
 
 export function get(url, params) {
     if (!url) return Promise.resolve();
     url += buildQueries(params);
-    return axios.get(host + url);
+    return axios.get(url).then(resp => {
+        console.log('[http-get] access ', url, ' resp: ', resp);
+        return Promise.resolve(resp.data);
+    });
 }
 
 export function post(url, body) {
-    return axios.post(host + url, body);
+    return axios.post(url, body).then(resp => {
+        console.log('[http-post] access ', url, ' body: ', body,' resp: ', resp);
+        return Promise.resolve(resp.data);
+    });
 }
 
 function buildQueries(params) {

@@ -3,7 +3,7 @@
         {{ label }}
         <a-select v-on="$listeners" :style="userStyle"
                   v-bind="$attrs" >
-            <a-select-option v-for="option in options" :key="option.value" :value="option.value">{{ option.name  }}</a-select-option>
+            <a-select-option v-for="option in options" :key="option.key" :value="option.value">{{ option.value  }}</a-select-option>
         </a-select>
     </label>
 </template>

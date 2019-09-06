@@ -28,29 +28,30 @@
 
         data: function () {
             return {
-                notifications: [
-                    {key: 1, title: '공지사항 내용이 들어갑니다' + Math.random(), date: '2019-09-11'},
-                    {key: 2, title: '공지사항의 본 내용이 이 곳에 들어갑니다. 다른 곳을 클릭하면 자동으로 펴진 곳이 접어집니다.', date: '2019-09-11'},
-                    {key: 3, title: '공지사항 내용이 들어갑니다', date: '2019-09-11'},
-                    {key: 4, title: '공지사항 내용이 들어갑니다', date: '2019-09-11'},
-                    {key: 5, title: '공지사항 내용이 들어갑니다', date: '2019-09-11'},
-                    {key: 6, title: '공지사항 내용이 들어갑니다', date: '2019-09-11'},
-                    {key: 7, title: '공지사항 내용이 들어갑니다', date: '2019-09-11'},
-                    {key: 8, title: '공지사항 내용이 들어갑니다', date: '2019-09-11'},
-                    {key: 9, title: '공지사항 내용이 들어갑니다', date: '2019-09-11'},
-                    {key: 10, title: '공지사항 내용이 들어갑니다', date: '2019-09-11'},
-                ],
-                total: 313,
+                notifications: [],
+                total: 0,
                 pageSize: 10,
                 currentPage: 1,
             }
         },
 
+        created: function() {
+            this.page(1);
+        },
+
         methods: {
             page(pageNumber) {
-                this.notifications = [...this.notifications]; // query data from db
-                this.currentPage = pageNumber;
-            },
+                this.$http.get('/api/notification/list', { currentPage: pageNumber }).then(resp => {
+                    if (resp.status !== true) {
+                        this.$alert.error(resp.errMsg);
+                    } else {
+                        this.notifications = resp.results;
+                        this.total = resp.total;
+                        this.pageSize = resp.pageSize;
+                        this.currentPage = pageNumber;
+                    }
+                })
+            }
         }
     }
 </script>

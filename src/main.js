@@ -3,17 +3,24 @@ import App from './App.vue';
 import VueRouter from 'vue-router';
 import menus from './menus_config';
 import  'animate.css'
-
 import 'ant-design-vue/dist/antd.less';
 import Antd from 'ant-design-vue'
-Vue.use(Antd);
-
-Vue.config.productionTip = false;
-Vue.use(VueRouter);
-
-
 import Main from './components/layout/Main'
 import Login from './components/layout/Login'
+import * as http  from './http';
+import Alert from './components/common/alert';
+
+import mock from './mock/mock';
+if (process.env.NODE_ENV === 'development') {
+    mock();
+}
+
+Vue.prototype.$http = http;
+Vue.config.productionTip = false;
+Vue.use(Antd);
+Vue.use(VueRouter);
+Vue.use(Alert);
+
 const segments = menus.map(it => it.children).flat(Infinity);
 let routes = [
     {
