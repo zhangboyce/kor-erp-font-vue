@@ -18,7 +18,7 @@
             <a-row>
                 <a-col :span="12">
                     <label>거래처명
-                        <a-input v-model="newRecord.xxx" />
+                        <a-input v-model="newRecord.consumer" />
                     </label>
                 </a-col>
                 <a-col :span="12">
@@ -46,15 +46,26 @@
         data() {
             return {
                 newRecord: Object.create(null),
-                years: [
-                    { value: '2018', name: '2018'},
-                    { value: '2019', name: '2019'},
-                ],
-                seasons: [
-                    { value: '1', name: '第一季度'},
-                    { value: '2', name: '第二季度'},
-                ],
+                years: [],
+                seasons: [],
             }
+        },
+
+        created: function() {
+            this.$http.get('/api/combobox/year').then(resp => {
+                if (resp.status !== true) {
+                    this.$alert.error(resp.errMsg);
+                } else {
+                    this.years = resp.results || [];
+                }
+            });
+            this.$http.get('/api/combobox/season').then(resp => {
+                if (resp.status !== true) {
+                    this.$alert.error(resp.errMsg);
+                } else {
+                    this.seasons = resp.results || [];
+                }
+            });
         },
 
         methods: {

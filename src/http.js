@@ -7,6 +7,8 @@ export function get(url, params) {
     return axios.get(url).then(resp => {
         console.log('[http-get] access ', url, ' resp: ', resp);
         return Promise.resolve(resp.data);
+    }).catch(err => {
+        return Promise.reject(err);
     });
 }
 
@@ -14,6 +16,8 @@ export function post(url, body) {
     return axios.post(url, body).then(resp => {
         console.log('[http-post] access ', url, ' body: ', body,' resp: ', resp);
         return Promise.resolve(resp.data);
+    }).catch(err => {
+        return Promise.reject(err);
     });
 }
 

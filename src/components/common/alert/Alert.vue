@@ -46,7 +46,7 @@
         top: 50%;
         width: 50%;
         left: 50%;
-        z-index: 999;
+        z-index: 99999;
         transform: translate(-50%, -50%);
     }
 </style>

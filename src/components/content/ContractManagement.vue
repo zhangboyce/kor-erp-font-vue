@@ -3,17 +3,17 @@
         <div class="panel">
             <div class="row">
                 <Select label="연도"
-                        :default-value="selectedYear"
+                        :value="selectedYear"
                         :options="years"
                         @change="changeYear" />
                 <Select label="시즌"
-                        :default-value="selectedSeason"
+                        :value="selectedSeason"
                         @change="changeSeason"
                         :options="seasons" />
             </div>
             <div class="row">
-                <Table selectable="true"
-                       :dataSource="data"
+                <Table :selectable=true
+                       :dataSource="dataSource"
                        :columns="columns"
                        :on-add="handleAdd.bind(this)"
                        :on-delete="handleDelete.bind(this)"
@@ -44,16 +44,23 @@
     const columns = [{
         title: '거래처명',
         dataIndex: 'consumer',
-        width: '30%',
+        width: '25%',
         scopedSlots: { customRender: 'consumer' },
     }, {
         title: '제작연도',
         dataIndex: 'year',
+        width: '25%',
         scopedSlots: { customRender: 'year' },
     }, {
         title: '제작연도',
         dataIndex: 'season',
+        width: '25%',
         scopedSlots: { customRender: 'season' },
+    }, {
+        title: '시간',
+        dataIndex: 'date',
+        width: '25%',
+        scopedSlots: { customRender: 'date' },
     }];
 
     export default {
@@ -83,49 +90,31 @@
         },
 
         created: function() {
-            this.years = [
-                { value: '2018', name: '2018'},
-                { value: '2019', name: '2019'},
-                { value: '2020', name: '2020'},
-                { value: '2021', name: '2021'},
-                { value: '2022', name: '2022'},
-            ];
-            this.selectedYear = this.years[0].value;
-            this.__loadSeasonsByYear__(this.selectedYear);
-            this.__loadData__();
+            this.$http.get('/api/combobox/year').then(resp => {
+                if (resp.status !== true) {
+                    this.$alert.error(resp.errMsg);
+                } else {
+                    this.years = resp.results || [];
+                    this.changeYear(this.years[0].value);
+                }
+            });
         },
 
         methods: {
             __loadData__() {
-                // load data from db by this.selectedYear ...
-                this.data = [{
-                    key: Math.round(Math.random() * 100),
-                    consumer: '客户' + Math.round(Math.random() * 100),
-                    year: '2018',
-                    season: '第四季度',
-                }, {
-                    key: Math.round(Math.random() * 100),
-                    consumer: '客户' + Math.round(Math.random() * 100),
-                    year: '2098',
-                    season: '第四季度',
-                }, {
-                    key: Math.round(Math.random() * 100),
-                    consumer: '客户' + Math.round(Math.random() * 100),
-                    year: '2098',
-                    season: '第四季度',
-                }, {
-                    key: Math.round(Math.random() * 100),
-                    consumer: '客户' + Math.round(Math.random() * 100),
-                    year: '2098',
-                    season: '第四季度',
-                }, {
-                    key: Math.round(Math.random() * 100),
-                    consumer: '客户' + Math.round(Math.random() * 100),
-                    year: '2098',
-                    season: '第四季度',
-                }];
-
-                this.total = Math.round((Math.random() + 1) * 2000);
+                this.$http.get('/api/contract/list', {
+                    year: this.selectedYear,
+                    season: this.selectedSeason,
+                    currentPage: this.currentPage,
+                }).then(resp => {
+                    if (resp.status !== true) {
+                        this.$alert.error(resp.errMsg);
+                    } else {
+                        this.dataSource = resp.results || [];
+                        this.pageSize = resp.pageSize || 10;
+                        this.total = resp.total || 0;
+                    }
+                });
             },
 
             page(pageNumber) {
@@ -135,47 +124,59 @@
 
             changeYear(year) {
                 this.selectedYear = year;
-                this.currentPage = 1;
-
-                this.__loadSeasonsByYear__(this.selectedYear);
-                this.__loadData__();
-            },
-
-            __loadSeasonsByYear__(year) {
-                // load seasons from db by year
-                this.seasons = [
-                    { value: '1', name: '第一季度'},
-                    { value: '2', name: '第二季度'},
-                    { value: '3', name: '第三季度'},
-                    { value: '4', name: '第四季度'},
-                ];
-                this.selectedSeason = this.seasons[0].value;
+                this.$http.get('/api/combobox/season', { year: year }).then(resp => {
+                    if (resp.status !== true) {
+                        this.$alert.error(resp.errMsg);
+                    } else {
+                        this.seasons = resp.results || [];
+                        this.changeSeason(this.seasons[0].value);
+                    }
+                });
             },
 
             changeSeason(season) {
-                console.log('change', season);
                 this.selectedSeason = season;
                 this.currentPage = 1;
                 this.__loadData__();
             },
 
-            handleAdd(record, success = () => {}, error = () => {}) {
-                console.log('add new record', record);
-                success();
+            handleAdd(record, onSuccess = () => {}, onError = () => {}) {
+                this.$http.post('/api/contract/add', { body: record }).then(resp => {
+                   if (resp.status !== true) {
+                       onError(resp.errMsg)
+                   } else {
+                       this.__loadData__();
+                       onSuccess();
+                   }
+                }).catch(err => {
+                    onError(err.message);
+                });
             },
 
-            handleEdit(record, success = () => {}, error = () => {}) {
-                console.log('edit column', record);
-                success();
+            handleEdit(record, onSuccess = () => {}, onError = () => {}) {
+                this.$http.post('/api/contract/edit', { body: record }).then(resp => {
+                    if (resp.status !== true) {
+                        onError(resp.errMsg)
+                    } else {
+                        this.__loadData__();
+                        onSuccess();
+                    }
+                }).catch(err => {
+                    onError(err.message);
+                });
             },
 
-            handleDelete(rows, success = () => {}, error = () => {}) {
-                let keys = rows.map(it => it.key);
-                console.log('delete column', keys);
-
-                this.currentPage = 1;
-                this.__loadData__();
-                success();
+            handleDelete(rows, onSuccess = () => {}, onError = () => {}) {
+                this.$http.post('/api/contract/delete', { body: rows }).then(resp => {
+                    if (resp.status !== true) {
+                        onError(resp.errMsg)
+                    } else {
+                        this.__loadData__();
+                        onSuccess();
+                    }
+                }).catch(err => {
+                    onError(err.message);
+                });
             },
         }
     }

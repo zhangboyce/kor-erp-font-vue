@@ -17,7 +17,7 @@
             </a-row>
             <a-row>
                 <a-col :span="12">
-                    <label>거래처명 <a-input v-model="editRecord.xxx" /> </label>
+                    <label>거래처명 <a-input v-model="editRecord.consumer" /> </label>
                 </a-col>
                 <a-col :span="12">이미지 <label><a-input v-model="editRecord.ooo" /> </label>
                 </a-col>

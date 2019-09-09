@@ -72,6 +72,8 @@
                     onOk() {
                         vm.onDelete(vm.selectedRows, () => {
                             vm.selectedRows = [];
+                        }, (err) => {
+                            vm.$alert.error(err);
                         });
                     }
                 });
@@ -94,8 +96,8 @@
                 this.onAdd(record, () => {
                     this.visibleAddModal = false;
                     this.confirmAddModalLoading = false;
-                }, () => {
-
+                }, (errMsg) => {
+                    this.$alert.error(errMsg);
                 });
             },
 
@@ -114,8 +116,8 @@
                 this.onEdit(record, () => {
                     this.visibleEditModal = false;
                     this.confirmEditModalLoading = false;
-                }, () => {
-
+                }, (errMsg) => {
+                    this.$alert.error(errMsg);
                 });
             },
         },
