@@ -1,26 +1,35 @@
 const Mock = require('mockjs');
-import { getParams } from './Query'
+import { getQueries, getParams } from './Query'
 
-export default function () {
-    return function (url, type, fn) {
-        if (arguments.length === 2) {
-            fn = type;
-            type = 'get';
+export default ['get', 'post', 'delete', 'put', 'head', 'connect', 'options', 'trace', 'patch'].reduce((a, c) => {
+    a[c] = function (url, fn) {
+        mock(url, c, fn);
+    };
+    return a;
+}, {});
+
+function mock(regexUrl, type, fn) {
+    Mock.mock(regexUrl, type, options => {
+        console.log('[mock-'+ type +'] access ', options.url);
+        if (typeof fn === 'function') {
+            let ctx = getCtx(regexUrl, options);
+            let obj = fn(ctx);
+            return Mock.mock(obj)
+        } else if (typeof fn === 'object') {
+            return Mock.mock(fn)
         }
-        Mock.mock(url, type, options => {
-            console.log('[mock-'+ type +'] access ', options.url);
-            if (type === 'get') {
-                let url = options.url;
-                let params = getParams(url);
-                let obj = fn(params);
-                return Mock.mock(obj)
-            }
+    })
+}
 
-            if (type === 'post') {
-                let body = options.body;
-                let obj = fn(body);
-                return Mock.mock(obj)
-            }
-        })
-    }
+function getCtx(regexUrl, options) {
+    let accessUrl = options.url;
+    let queries = getQueries(accessUrl);
+    let params = getParams(regexUrl, accessUrl);
+    let body = options.body;
+
+    let ctx = Object.create(null);
+    ctx.queries = queries;
+    ctx.params = params;
+    ctx.body = body;
+    return ctx;
 }

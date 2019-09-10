@@ -1,4 +1,4 @@
-export function getParams(url) {
+export function getQueries(url) {
     if (typeof url !== 'string' || url.length === 0 || url.trim().length === 0) {
         return Object.create(null);
     }
@@ -17,4 +17,8 @@ export function getParams(url) {
         if (c[0]) a[c[0]] = c[1];
         return a;
     }, Object.create(null));
+}
+
+export function getParams(regexUrl, url) {
+
 }

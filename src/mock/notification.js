@@ -1,18 +1,16 @@
 export default {
     list(ctx) {
-        const { currentPage, year, season } = ctx.queries;
+        const { currentPage } = ctx.queries;
         const pageSize = 20;
         if (currentPage) {
             return {
                 status: true,
                 ['results|'+ pageSize]:[{
                     'key|+1': 1,
-                    'consumer': '@ctitle(5, 10)',
-                    'year': year,
-                    'season': season,
+                    'title': '@ctitle(5, 50)',
                     'date': '@datetime("yyyy-MM-dd HH:mm:ss")'
                 }],
-                total: 112,
+                total: 137,
                 pageSize: pageSize
             };
         } else {
@@ -21,23 +19,5 @@ export default {
                 errMsg: 'Illegal params, currentPage: ' + currentPage
             };
         }
-    },
-
-    add(ctx) {
-        let record = ctx.body.data;
-
-        return { status: true };
-    },
-
-    edit(ctx) {
-        let record = ctx.body.data;
-
-        return { status: true };
-    },
-
-    delete(ctx) {
-        let record = ctx.body.data;
-
-        return { status: true };
     }
 };

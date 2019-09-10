@@ -1,22 +1,19 @@
-import getEasyUIComboboxData from './getEasyUIComboboxData'
-import comboBoxYear from './comboBoxYear'
-import comboBoxSeason from './comboBoxSeason'
-import listCurrentInventory from './listCurrentInventory'
-import listNotification from './listNotification'
+import currentInventory from './currentInventory'
+import notification from './notification'
 import contract from './contract'
+import combobox from './combobox'
 
-import wrapper from './wrapper';
-const mock = wrapper();
+import mock from './wrapper';
 
 export default function () {
     console.log('[mock] init.');
-    mock(/\/api\/GetEasyUIComboboxData(\?.*)?/, getEasyUIComboboxData);
-    mock(/\/api\/combobox\/year(\?.*)?/, comboBoxYear);
-    mock(/\/api\/combobox\/season(\?.*)?/, comboBoxSeason);
-    mock(/\/api\/currentInventory\/list(\?.*)?/, listCurrentInventory);
-    mock(/\/api\/notification\/list(\?.*)?/, listNotification);
-    mock(/\/api\/contract\/list(\?.*)?/, contract.list);
-    mock(/\/api\/contract\/add(\?.*)?/, 'post', contract.add);
-    mock(/\/api\/contract\/edit(\?.*)?/, 'post', contract.edit);
-    mock(/\/api\/contract\/delete(\?.*)?/, 'post', contract.delete);
+    mock.get(/\/api\/GetEasyUIComboboxData(\?.*)?/, combobox.getEasyUIComboboxData);
+    mock.get(/\/api\/combobox\/year(\?.*)?/, combobox.year);
+    mock.get(/\/api\/combobox\/season(\?.*)?/, combobox.season);
+    mock.get(/\/api\/currentInventory\/list(\?.*)?/, currentInventory.list);
+    mock.get(/\/api\/notification\/list(\?.*)?/, notification.list);
+    mock.get(/\/api\/contract\/list(\?.*)?/, contract.list);
+    mock.post(/\/api\/contract\/add(\?.*)?/, contract.add);
+    mock.post(/\/api\/contract\/edit(\?.*)?/, contract.edit);
+    mock.post(/\/api\/contract\/delete(\?.*)?/, contract.delete);
 };
