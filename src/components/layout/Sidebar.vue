@@ -152,6 +152,7 @@
         color: @grey;
         margin: 10px 4px;
         padding-left: 10px;
+        display: block;
 
         &::before {
             content: '';
@@ -166,10 +167,10 @@
             transition: all 0.5s ease-out;
         }
 
-        &::after {
-            content: '\A';
-            white-space: pre;
-        }
+        /*&::after {*/
+            /*content: '\A';*/
+            /*white-space: pre;*/
+        /*}*/
 
         &:hover {
             color: @tealish;

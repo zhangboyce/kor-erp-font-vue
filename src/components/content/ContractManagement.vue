@@ -35,9 +35,6 @@
 </template>
 
 <script>
-    import Select from '../common/Select';
-    import Table from '../common/Table';
-    import Pagination from '../common/Pagination';
     import ContractManagement_AddModal from './ContractManagement_AddModal'
     import ContractManagement_EditModal from './ContractManagement_EditModal'
 
@@ -66,9 +63,6 @@
     export default {
         name: "ContractManagement",
         components: {
-            Select,
-            Table,
-            Pagination,
             ContractManagement_AddModal,
             ContractManagement_EditModal
         },
@@ -90,7 +84,7 @@
         },
 
         created: function() {
-            this.$http.get('/api/combobox/year').then(resp => {
+            this.$http.get('/api/combobox/year/').then(resp => {
                 if (resp.status !== true) {
                     this.$alert.error(resp.errMsg);
                 } else {
@@ -102,7 +96,7 @@
 
         methods: {
             __loadData__() {
-                this.$http.get('/api/contract/list', {
+                this.$http.get('/api/contract/list/', {
                     year: this.selectedYear,
                     season: this.selectedSeason,
                     currentPage: this.currentPage,
@@ -124,7 +118,7 @@
 
             changeYear(year) {
                 this.selectedYear = year;
-                this.$http.get('/api/combobox/season', { year: year }).then(resp => {
+                this.$http.get('/api/combobox/season/', { year: year }).then(resp => {
                     if (resp.status !== true) {
                         this.$alert.error(resp.errMsg);
                     } else {
@@ -141,7 +135,7 @@
             },
 
             handleAdd(record, onSuccess = () => {}, onError = () => {}) {
-                this.$http.post('/api/contract/add', { body: record }).then(resp => {
+                this.$http.post('/api/contract/add/', { body: record }).then(resp => {
                    if (resp.status !== true) {
                        onError(resp.errMsg)
                    } else {
@@ -154,7 +148,7 @@
             },
 
             handleEdit(record, onSuccess = () => {}, onError = () => {}) {
-                this.$http.post('/api/contract/edit', { body: record }).then(resp => {
+                this.$http.post('/api/contract/edit/', { body: record }).then(resp => {
                     if (resp.status !== true) {
                         onError(resp.errMsg)
                     } else {
@@ -167,7 +161,7 @@
             },
 
             handleDelete(rows, onSuccess = () => {}, onError = () => {}) {
-                this.$http.post('/api/contract/delete', { body: rows }).then(resp => {
+                this.$http.post('/api/contract/delete/', { body: rows }).then(resp => {
                     if (resp.status !== true) {
                         onError(resp.errMsg)
                     } else {

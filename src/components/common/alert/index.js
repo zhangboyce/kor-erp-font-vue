@@ -2,9 +2,6 @@ import Alert from './Alert.vue';
 
 const AlertBox = {};
 AlertBox.install = function (Vue, options) {
-
-    console.log('install alert')
-
     const AlertInstance = Vue.extend(Alert);
 
     let current = null;

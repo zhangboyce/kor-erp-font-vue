@@ -9,6 +9,7 @@ import Main from './components/layout/Main'
 import Login from './components/layout/Login'
 import * as http  from './http';
 import Alert from './components/common/alert';
+import common from './components/common'
 
 import mock from './mock/mock';
 if (process.env.NODE_ENV === 'development') {
@@ -20,6 +21,7 @@ Vue.config.productionTip = false;
 Vue.use(Antd);
 Vue.use(VueRouter);
 Vue.use(Alert);
+Vue.use(common);
 
 const segments = menus.map(it => it.children).flat(Infinity);
 let routes = [

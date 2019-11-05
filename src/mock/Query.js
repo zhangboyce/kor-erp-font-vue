@@ -19,6 +19,14 @@ export function getQueries(url) {
     }, Object.create(null));
 }
 
-export function getParams(regexUrl, url) {
-
+export function getParams(regexp, keys, url) {
+    let params = Object.create(null);
+    let match = regexp.exec(url);
+    for (let i = 1; i < match.length; i++) {
+        let key = keys[i - 1];
+        let prop = key.name;
+        let val = decodeURIComponent(match[i]);
+        if (val !== undefined) params[prop] = val;
+    }
+    return params;
 }

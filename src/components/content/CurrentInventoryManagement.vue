@@ -29,9 +29,6 @@
 </template>
 
 <script>
-    import Select from '../common/Select';
-    import Table from '../common/Table';
-
     const columns = [{
         title: '사이즈',
         dataIndex: 'size',
@@ -56,10 +53,6 @@
 
     export default {
         name: "CurrentInventoryManagement",
-        components: {
-            Select,
-            Table,
-        },
 
         data() {
             return {

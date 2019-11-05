@@ -7,7 +7,8 @@ export default {
                 status: true,
                 ['results|'+ pageSize]:[{
                     'key|+1': 1,
-                    'title': '@ctitle(5, 50)',
+                    'title': '@ctitle(5, 10)',
+                    'content': '@cparagraph',
                     'date': '@datetime("yyyy-MM-dd HH:mm:ss")'
                 }],
                 total: 137,
